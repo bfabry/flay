@@ -165,7 +165,7 @@ class Flay
   end
 
   def process_rb file
-    RubyParser.new.process(File.read(file), file)
+    result = RubyParser.new.process(File.read(file), file)
   end
 
   def process_sexp pt
@@ -271,6 +271,13 @@ class Flay
       count += 1
       puts "%d) %s code found in %p (mass%s = %d)" %
         [count, match, node.first, bonus, mass]
+
+        require 'pp'
+
+      if mass == 1120
+        pp nodes.first.inspect
+        pp nodes.last.inspect
+      end
 
       nodes.each_with_index do |x, i|
         if option[:diff] then
