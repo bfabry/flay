@@ -21,8 +21,16 @@ class CukeInstance
     define_step(regex,&block)
   end
 
+  def And(regex, &block)
+    define_step(regex, &block)
+  end
+
   def define_step(regex,&block)
     @steps << regex
+  end
+
+  def World(*args)
+    # do nothing
   end
 
   def require(*args)
