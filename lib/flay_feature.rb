@@ -21,8 +21,16 @@ class CukeInstance
     define_step(regex,&block)
   end
 
+  def And(regex, &block)
+    define_step(regex, &block)
+  end
+
   def define_step(regex,&block)
     @steps << regex
+  end
+
+  def World(*args)
+    # do nothing
   end
 
   def require(*args)
@@ -65,14 +73,14 @@ class Flay
     @current_node << :block
 
     File.read(file).each_with_index do |line,line_no|
-      @line_no = line_no
+      @line_no = line_no + 1
 
       if line =~ /Scenario|Background/
         @current_node = @tree
         @current_node << s(:iter,s(:call,nil,:scen_defn,s(:arglist)),nil)
         @current_node = @current_node.last
       else
-        step_id = @instance.line_matches(line,line_no,file)
+        step_id = @instance.line_matches(line,@line_no,file)
         @current_node << step_id if step_id
       end
     end

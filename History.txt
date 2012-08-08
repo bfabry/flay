@@ -1,3 +1,27 @@
+=== 1.4.3 / 2011-08-10
+
+* 1 bug fix:
+
+  * Fixes for 1.9 with --diff. (mmullis)
+
+=== 1.4.2 / 2011-02-18
+
+* 2 bug fixes:
+
+  * Added flay require in flay_task
+  * Switched to minitest. (doh)
+
+=== 1.4.1 / 2010-09-01
+
+* 2 minor enhancements:
+
+  * Added extra error handling for ERB flay to deal with tons of bad ERB
+  * Skip plugin if another version already loaded (eg local vs gem).
+
+* 1 bug fix:
+
+  * Fixed all tests that were having problems on 1.9 due to unstable hashes
+
 === 1.4.0 / 2009-08-14
 
 * 4 minor enhancements:
