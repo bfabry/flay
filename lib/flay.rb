@@ -1,15 +1,20 @@
 #!/usr/bin/env ruby -w
 
-$: << "../../ruby_parser/dev/lib"
-$: << "../../ruby2ruby/dev/lib"
-
 require 'optparse'
 require 'rubygems'
 require 'sexp_processor'
 require 'ruby_parser'
 
+class File
+  RUBY19 = "<3".respond_to? :encoding
+
+  class << self
+    alias :binread :read unless RUBY19
+  end
+end
+
 class Flay
-  VERSION = '1.4.0'
+  VERSION = '1.4.3'
 
   def self.default_options
     {
@@ -165,7 +170,7 @@ class Flay
   end
 
   def process_rb file
-    result = RubyParser.new.process(File.read(file), file)
+    RubyParser.new.process(File.binread(file), file)
   end
 
   def process_sexp pt
@@ -197,7 +202,7 @@ class Flay
 
   def n_way_diff *data
     data.each_with_index do |s, i|
-      c = (?A + i).chr
+      c = (?A.ord + i).chr
       s.group = c
     end
 
@@ -281,7 +286,7 @@ class Flay
 
       nodes.each_with_index do |x, i|
         if option[:diff] then
-          c = (?A + i).chr
+          c = (?A.ord + i).chr
           puts "  #{c}: #{x.file}:#{x.line}"
         else
           puts "  #{x.file}:#{x.line}"
@@ -314,6 +319,7 @@ class Sexp
     hashes
   end
 
+  # REFACTOR: move to sexp.rb
   def deep_each(&block)
     self.each_sexp do |sexp|
       block[sexp]
@@ -321,6 +327,7 @@ class Sexp
     end
   end
 
+  # REFACTOR: move to sexp.rb
   def each_sexp
     self.each do |sexp|
       next unless Sexp === sexp
